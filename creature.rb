@@ -40,10 +40,11 @@ class Creature
     
     @actions = Hash.new
     
+    @@log.info(@ii_data['Name']);
     @ii_data['Actions'].each {|action|
      @actions[action['Name']] = Action.new(action, logger = @@log);
     }
-    
+    @@log.info("---- Next Creature -------");
   end
   
   def prob_to_hit (ac, atk, adv = false)

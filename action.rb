@@ -32,7 +32,22 @@ class Action
       end
     end
     
+    if(@raw_data['Name'].downcase === 'multiattack')
+      @@log.info("Multiattack found. Converting...");
+      @type = 'multiattack';
+      @attacks = Hash.new;
+      parse_multiattack(@raw_data["Content"]);
+    else
+      @type = 'action';
+    end
+    
     @@log.info(@raw_data);
+  end
+  
+  def parse_multiattack(content_str)
+    content = content_str.strip(".").split(" ");
+    i = 0;
+    while i 
   end
   
   
