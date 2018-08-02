@@ -1,3 +1,5 @@
+# incomplete and not working well
+
 require 'logger'
 
 class Action
@@ -45,9 +47,12 @@ class Action
   end
   
   def parse_multiattack(content_str)
-    content = content_str.strip(".").split(" ");
-    i = 0;
-    while i 
+    
+    #iterate through and reserve multiattack. at end of iteration of actions, assess multiattack for other abilities or their types
+    
+#    content = content_str.strip(".").split(" ");
+#    i = 0;
+#    while i 
   end
   
   

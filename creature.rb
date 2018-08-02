@@ -32,24 +32,40 @@ class Creature
         @@log.warn("Debugging messages enabled by default")
       end
     end
+  
+    #calculate percentage to hit for AC and savings and checks for a range of numbers
+    #   that would hit
+    @ac = @ii_data["AC"]["Value"];
+    @ability_mods = Hash.new;
+    @ability_mods[:wis] = _calc_mod(@ii_data["Abilities"]["Wis"]);
     
+      
+      
+      
 #    @@log.info(@ii_data);
 #    @@log.info("\t #{@ii_data['Actions'][0]}");
     
     
     
-    @actions = Hash.new
+#    @actions = Hash.new
+#    
+#    @@log.info(@ii_data['Name']);
+#    @ii_data['Actions'].each {|action|
+#     @actions[action['Name']] = Action.new(action, logger = @@log);
+#    }
     
-    @@log.info(@ii_data['Name']);
-    @ii_data['Actions'].each {|action|
-     @actions[action['Name']] = Action.new(action, logger = @@log);
-    }
     @@log.info("---- Next Creature -------");
   end
   
-  def prob_to_hit (ac, atk, adv = false)
+  def _calc_mod (raw, prof = 0)
     return(
-      prob_to_succeed(ac, @@ii_data[""])
+      ((raw - 8) / 2).floor(-2) + prof
+    );
+  end
+  
+  def prob_to_hit (atk, adv = false)
+    return(
+      prob_to_succeed(@ac, @ii_data[""])
     )
   end
   
