@@ -35,9 +35,15 @@ class Creature
   
     #calculate percentage to hit for AC and savings and checks for a range of numbers
     #   that would hit
-    @ac = @ii_data["AC"]["Value"];
-    @ability_mods = Hash.new;
-    @ability_mods[:wis] = _calc_mod(@ii_data["Abilities"]["Wis"]);
+    @ac = @ii_data["AC"]["Value"].to_i;
+    @prof_mod = _calc_prof_mod(@ii_data["Challenge"].to_i, cr = true);
+      
+    #import ability stats (raw, modifier for checks, modifier for saves)
+    @ability_stats = import_ability_stats(@ii_data["Abilities"], @prof_mod);
+    
+    #import skill stats (raw numbers and modifiers)
+#    @skill_stats = import_skill_stats(@ii_data["Skills"]);
+    
     
       
       
@@ -57,9 +63,35 @@ class Creature
     @@log.info("---- Next Creature -------");
   end
   
+  def _calc_prof_mod(level, cr = false)
+    
+    if(cr)
+      cr_multiplier = 4;
+    else
+      cr_multiplier = 1;
+    end
+    
+    return(
+      ((level + 7) / 4 * cr_multiplier).floor
+    );
+  end
+  
+  def import_ability_stats(raw_data, prof_mod)
+    abilities = Hash.new;
+    
+    raw_data.each do |name, val|
+      abilities[name] = Hash.new;
+      abilities[name][:raw] = val.to_i;
+      abilities[name][:check] = _calc_mod(abilities[name][:raw]);
+      abilities[name][:save] = abilities[name][:check] + prof_mod;
+    end
+    
+    return(abilities);
+  end
+  
   def _calc_mod (raw, prof = 0)
     return(
-      ((raw - 8) / 2).floor(-2) + prof
+      ((raw - 8) / 2).floor + prof
     );
   end
   
