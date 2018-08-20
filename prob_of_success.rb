@@ -15,9 +15,9 @@ def prob_to_succeed (dc, modifier, adv = false)
   
 end
 
-############# Testing below ###################
-
-dc = 20.0;
-modifier = 0.0;
-
-print(prob_to_succeed(dc, modifier));
+############## Testing below ###################
+#
+#dc = 20.0;
+#modifier = 0.0;
+#
+#print(prob_to_succeed(dc, modifier));

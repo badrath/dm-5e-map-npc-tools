@@ -42,7 +42,7 @@ class Improved_initiative
         @creatures[temp["Name"]] = Creature.new(temp, @@log);
       elsif(k.include? "PlayerCharacters.")
         temp = JSON.parse(ii_json[k]);
-        @pcs[temp["Name"]] = temp;
+        @pcs[temp["Name"]] = Creature.new(temp,@@log);
       elsif(k.include? "SavedEncounters.")
         temp = JSON.parse(ii_json[k]);
         @encounters[temp["Name"]] = temp;
@@ -52,6 +52,39 @@ class Improved_initiative
     
     @@log.info("improved initiative initialized.");
     
+  end
+  
+  def get_ability_check_success_rates(stat, dc, creatures, mod_group = 0, group_adv = false)
+    creature_successes = Hash.new;
+    
+    creatures.each do |name, creature|
+      mod_total = creature.instance_variable_get("@ability_stats")[stat][:check] + mod_group;
+      creature_successes[name] = creature.prob_to_succeed(dc, mod_total).round(2);
+    end
+    
+    return(creature_successes);
+  end
+  
+  def get_ability_save_success_rates(stat, dc, creatures, mod_group = 0, groupd_adv = false)
+    creature_successes = Hash.new;
+        
+    creatures.each do |name, creature|
+      mod_total = creature.instance_variable_get("@ability_stats")[stat][:save] + mod_group;
+      creature_successes[name] = creature.prob_to_succeed(dc, mod_total).round(2);
+    end
+    
+    return(creature_successes);
+  end
+  
+  def get_skill_check_success_rates(skill, dc, creatures, mod_group = 0, group_adv = false)
+    creature_successes = Hash.new;
+            
+    creatures.each do |name, creature|
+      mod_total = creature.instance_variable_get("@ability_stats")[skill][:check] + mod_group;
+      creature_successes[name] = creature.prob_to_succeed(dc, mod_total).round(2);
+    end
+    
+    return(creature_successes);
   end
   
 end
