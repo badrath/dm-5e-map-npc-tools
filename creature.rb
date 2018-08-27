@@ -41,26 +41,7 @@ class Creature
     #import ability stats (raw, modifier for checks, modifier for saves)
     @ability_stats = import_ability_stats(@ii_data["Abilities"], @prof_mod);
     
-    #import skill stats (raw numbers and modifiers)
-#    @skill_stats = import_skill_stats(@ii_data["Skills"]);
-    
-    
-      
-      
-      
-#    @@log.info(@ii_data);
-#    @@log.info("\t #{@ii_data['Actions'][0]}");
-    
-    
-    
-#    @actions = Hash.new
-#    
-#    @@log.info(@ii_data['Name']);
-#    @ii_data['Actions'].each {|action|
-#     @actions[action['Name']] = Action.new(action, logger = @@log);
-#    }
-    
-    @@log.info("---- Next Creature -------");
+#    @@log.info("---- #{@ii_data["Name"]} Loaded -------");
   end
   
   def _calc_prof_mod(level, cr = false)
@@ -106,9 +87,9 @@ class Creature
     dice_type = 20; # d20
     
     if(adv)
-      num_dice = 2.0;
+      num_dice = 2.0; # adv
     else
-      num_dice = 1.0;
+      num_dice = 1.0; # regular
     end
     
     dc = dc.to_f;

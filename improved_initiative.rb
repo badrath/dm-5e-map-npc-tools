@@ -1,9 +1,10 @@
 require 'logger'
 require 'json'
 require_relative 'creature.rb'
+require_relative 'encounter.rb'
 
 class Improved_initiative
-  def initialize(file_path, log_level = 'info', log_out = STDOUT)
+  def initialize(file_path, all_creatures = false, all_pcs = false, all_encounters = false, log_level = 'info', log_out = STDOUT)
     
     # Set logger
     @@log = Logger.new(log_out)
@@ -32,20 +33,27 @@ class Improved_initiative
     #Creatures.dfsdfs, PlayerCharacters.dsdfsdf, SavedEncounters.sadfasdfsdf
     
     @creatures = Hash.new;
-    @creature_list_raw
+#    @creature_list_raw
     @pcs = Hash.new;
     @encounters = Hash.new;
+    @all_creatures = all_creatures;
+    @all_pcs = all_pcs;
+    @all_encounters = all_encounters;
     
     ii_json.keys.each {|k|
-      if(k.include? "Creatures.")
+      @@log.info(k);
+      if(@all_creatures and k.include? "Creatures.")
+        @@log.info("processing creature for all_creatures")
         temp = JSON.parse(ii_json[k]);
         @creatures[temp["Name"]] = Creature.new(temp, @@log);
-      elsif(k.include? "PlayerCharacters.")
+      elsif(@all_pcs and k.include? "PlayerCharacters.")
+        @@log.info("processing creature for all_pcs");
         temp = JSON.parse(ii_json[k]);
         @pcs[temp["Name"]] = Creature.new(temp,@@log);
-      elsif(k.include? "SavedEncounters.")
+      elsif(@all_encounters and k.include? "SavedEncounters.")
+        @@log.info("processing encounter for all_encounters")
         temp = JSON.parse(ii_json[k]);
-        @encounters[temp["Name"]] = temp;
+        @encounters[temp["Name"]] = Encounter.new(temp, @@log);
 #        @@log.info(temp);
       end
     }
